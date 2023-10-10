@@ -41,6 +41,7 @@
       this.pnlTable.Size = new System.Drawing.Size(801, 448);
       this.pnlTable.TabIndex = 0;
       this.pnlTable.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlTable_Paint);
+      this.pnlTable.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlTable_MouseDown);
       // 
       // btnLogOut
       // 
