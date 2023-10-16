@@ -9,11 +9,13 @@ namespace prj2.Classes
     // Attributes.
     int _id;                        // 球編號
     int _r = 10, _r2 = 20;          // 半徑，直徑
-    public double _x = 0, _y = 0;   // 球心 坐標
+    private double _x = 0, _y = 0;  // 球心 坐標
     Color _c;                       // 球顏色
     SolidBrush _br;                 // 刷子（畫球用）
     private double _ang = 0;        // 球 行進角度
-    public double _cosA, _sinA;     // coSine 行進角度, Sine 行進角度
+    private double _cosA, _sinA;    // coSine 行進角度, Sine 行進角度
+    private double _spd = 0;        // 球行進速度
+    private double _fr = 0;         // 摩擦力
 
     /// <summary>
     /// Constructors.
@@ -31,6 +33,25 @@ namespace prj2.Classes
       _id = i;                      // 球編號
     }
 
+
+    /* =====Public attributes===== */
+    /// <summary>
+    /// 球心座標 X.
+    /// </summary>
+    public double X => _x;
+
+    /// <summary>
+    /// 球心座標 Y.
+    /// </summary>
+    public double Y => _y;
+
+    /// <summary>
+    /// 球行進速度.
+    /// </summary>
+    public double Speed => _spd;
+
+
+    /* =====Method area===== */
     /// <summary>
     /// 畫球.
     /// </summary>
@@ -69,6 +90,40 @@ namespace prj2.Classes
            (float)(_x - r12 * _cosA), (float)(_y - r12 * _sinA),    //  12倍大的同心圓周上的點
            (float)(_x - _r * _cosA), (float)(_y - _r * _sinA)       //  球圓周上的點 - r12 -r, 使球杆畫在滑鼠點的另一邊
       );
+    }
+
+    /// <summary>
+    /// 移動球.
+    /// </summary>
+    public void move()
+    {
+      //  速度大於0才移動
+      if (_spd > 0)
+      {  
+        _x += _spd * _cosA;   //  x 方向分量
+        _y += _spd * _sinA;   //  y 方向分量
+        _spd -= _fr;          //  速度依摩擦力大小遞減
+      }
+      // 避免小於0而反向移動
+      else
+        _spd = 0;  
+    }
+
+    /// <summary>
+    /// 變更球行進速度.
+    /// </summary>
+    public void setSpeed(double speed)
+    {
+      _spd = speed;
+    }
+
+    /// <summary>
+    /// 變更摩擦力.
+    /// </summary>
+    /// <param name="friction"></param>
+    public void setFriction(double friction)
+    {
+      _fr = friction;
     }
   }
 }
