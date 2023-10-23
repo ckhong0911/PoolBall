@@ -38,7 +38,7 @@
       this.label1 = new System.Windows.Forms.Label();
       this.label2 = new System.Windows.Forms.Label();
       this.pnlTable = new Guna.UI2.WinForms.Guna2Panel();
-      this.lblTimer = new System.Windows.Forms.Label();
+      this.timer2 = new System.Windows.Forms.Timer(this.components);
       this.SuspendLayout();
       // 
       // btnLogOut
@@ -98,15 +98,19 @@
       // vScrollBar1
       // 
       this.vScrollBar1.Location = new System.Drawing.Point(869, 107);
+      this.vScrollBar1.Maximum = 140;
       this.vScrollBar1.Name = "vScrollBar1";
       this.vScrollBar1.Size = new System.Drawing.Size(32, 362);
+      this.vScrollBar1.SmallChange = 10;
       this.vScrollBar1.TabIndex = 66;
       // 
       // vScrollBar2
       // 
       this.vScrollBar2.Location = new System.Drawing.Point(954, 107);
+      this.vScrollBar2.Maximum = 50;
       this.vScrollBar2.Name = "vScrollBar2";
       this.vScrollBar2.Size = new System.Drawing.Size(32, 362);
+      this.vScrollBar2.SmallChange = 5;
       this.vScrollBar2.TabIndex = 67;
       // 
       // label1
@@ -145,18 +149,9 @@
       this.pnlTable.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlTable_Paint);
       this.pnlTable.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlTable_MouseDown);
       // 
-      // lblTimer
+      // timer2
       // 
-      this.lblTimer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.lblTimer.AutoSize = true;
-      this.lblTimer.BackColor = System.Drawing.Color.Black;
-      this.lblTimer.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lblTimer.ForeColor = System.Drawing.Color.Lime;
-      this.lblTimer.Location = new System.Drawing.Point(725, 494);
-      this.lblTimer.Name = "lblTimer";
-      this.lblTimer.Size = new System.Drawing.Size(107, 45);
-      this.lblTimer.TabIndex = 71;
-      this.lblTimer.Text = "Timer";
+      this.timer2.Enabled = true;
       // 
       // Form2
       // 
@@ -164,7 +159,6 @@
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.BackColor = System.Drawing.Color.WhiteSmoke;
       this.ClientSize = new System.Drawing.Size(1022, 561);
-      this.Controls.Add(this.lblTimer);
       this.Controls.Add(this.pnlTable);
       this.Controls.Add(this.label2);
       this.Controls.Add(this.label1);
@@ -193,6 +187,6 @@
     internal System.Windows.Forms.Label label1;
     internal System.Windows.Forms.Label label2;
     private Guna.UI2.WinForms.Guna2Panel pnlTable;
-    internal System.Windows.Forms.Label lblTimer;
+    private System.Windows.Forms.Timer timer2;
   }
 }

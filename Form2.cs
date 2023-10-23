@@ -142,7 +142,7 @@ namespace prj2
       _balls[0].setFriction((vScrollBar2.Maximum - vScrollBar2.Value) / 50.0);
 
       // 啟動計時器
-      timer1.Start();  
+      timer1.Start();
     }
 
     /// <summary>
