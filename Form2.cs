@@ -15,7 +15,9 @@ namespace prj2
     public double _x = 0, _y = 0;           // 球心坐標
     int _r = 10, _r2 = 20;                  // 半徑，直徑
     private Ball[] _balls = new Ball[10];   // 10 顆球的陣列
-
+    //BufferedGraphicsContext currentContext;
+    //BufferedGraphics gBuffer;
+    int _width = 0, _height = 0;  // 球桌  寬，高
 
     /// <summary>
     /// Constructors.
@@ -26,6 +28,8 @@ namespace prj2
       InitializeComponent();
 
       _user = user;
+      _width = pnlTable.Width;
+      _height = pnlTable.Height;
     }
 
     #region form initialize
@@ -110,7 +114,8 @@ namespace prj2
       // 移動球
       for (int i = 0; i < 10; i++)
       {
-        _balls[i].move();   
+        _balls[i].move();
+        _balls[i].rebound(_width, _height);
         sum_spd += _balls[i].Speed;
       }
 

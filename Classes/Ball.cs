@@ -125,5 +125,33 @@ namespace prj2.Classes
     {
       _fr = friction;
     }
+
+    /// <summary>
+    /// 球碰到邊反彈.
+    /// </summary>
+    public void rebound(int width, int height)
+    {  
+      // 球碰邊反彈，或進洞
+      if (_x < _r || _x > width - _r)
+      {  
+        // 出左右邊
+        setAng(Math.PI - _ang);
+        if (_x < _r)
+          _x = _r;
+        // 拉回桌內
+        else
+          _x = width - _r;
+      }
+      else if (_y < _r || _y > height - _r)
+      { 
+        // 出上下邊
+        setAng(-_ang);
+        if (_y < _r)
+          _y = _r;    
+        // 拉回桌內
+        else
+          _y = height - _r;
+      }
+    }
   }
 }

@@ -38,6 +38,7 @@
       this.label1 = new System.Windows.Forms.Label();
       this.label2 = new System.Windows.Forms.Label();
       this.pnlTable = new Guna.UI2.WinForms.Guna2Panel();
+      this.lblTimer = new System.Windows.Forms.Label();
       this.SuspendLayout();
       // 
       // btnLogOut
@@ -144,12 +145,26 @@
       this.pnlTable.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlTable_Paint);
       this.pnlTable.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlTable_MouseDown);
       // 
+      // lblTimer
+      // 
+      this.lblTimer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+      this.lblTimer.AutoSize = true;
+      this.lblTimer.BackColor = System.Drawing.Color.Black;
+      this.lblTimer.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.lblTimer.ForeColor = System.Drawing.Color.Lime;
+      this.lblTimer.Location = new System.Drawing.Point(725, 494);
+      this.lblTimer.Name = "lblTimer";
+      this.lblTimer.Size = new System.Drawing.Size(107, 45);
+      this.lblTimer.TabIndex = 71;
+      this.lblTimer.Text = "Timer";
+      // 
       // Form2
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.BackColor = System.Drawing.Color.WhiteSmoke;
       this.ClientSize = new System.Drawing.Size(1022, 561);
+      this.Controls.Add(this.lblTimer);
       this.Controls.Add(this.pnlTable);
       this.Controls.Add(this.label2);
       this.Controls.Add(this.label1);
@@ -178,5 +193,6 @@
     internal System.Windows.Forms.Label label1;
     internal System.Windows.Forms.Label label2;
     private Guna.UI2.WinForms.Guna2Panel pnlTable;
+    internal System.Windows.Forms.Label lblTimer;
   }
 }
