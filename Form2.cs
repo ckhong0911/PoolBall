@@ -116,8 +116,21 @@ namespace prj2
       {
         _balls[i].move();
         _balls[i].rebound(_width, _height);
+
+        // 應用摩擦力
+        if (i != 0)  // 排除母球
+        {
+          double friction = 0.05;
+          _balls[i].setFriction(friction);
+        }
+
         sum_spd += _balls[i].Speed;
+
+        // 碰撞偵測
+        for (int j = i + 1; j < 10; j++)
+          _balls[i].hit(_balls[i], _balls[j]);
       }
+    
 
       // 所有球都停了，停止計時器
       if (sum_spd <= 0.001)
@@ -127,6 +140,8 @@ namespace prj2
       }
     }
     #endregion
+
+    
 
     /// <summary>
     /// 每次擊球，重新初始化打擊力，摩擦力.
