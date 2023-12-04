@@ -154,7 +154,7 @@ namespace prj2.Classes
       }
     }
 
-    public void hit(Ball b0, Ball b1)
+    public bool hit(Ball b0, Ball b1)
     {
       // b1 hit  b0  速度快的撞慢的
       if (b0._spd < b1._spd)
@@ -164,7 +164,8 @@ namespace prj2.Classes
         b1 = t;
       }
 
-      double dx = b1._x - b0._x, dy = b1._y - b0._y;
+      double dx = b1._x - b0._x;
+      double dy = b1._y - b0._y;
 
       if (Math.Abs(dx) <= _r2 && Math.Abs(dy) <= _r2)
       { // X 坐標間差距 < 球直徑
@@ -174,9 +175,12 @@ namespace prj2.Classes
         b0.setAng(ang + Math.PI / 2.0);   //  球b0  碰撞 b1 后 和 b1 的夾角 90° 
 
         double spd_average = (b0._spd + b1._spd) / 2.0;
-        b0._spd = b1._spd = spd_average;    //  碰撞後 先大略平均分配 兩球的速度
-                                          // 白球速度 == 紅球速度 == 兩球的速度 和 /2
+        b0._spd = b1._spd = spd_average;    // 碰撞後 先大略平均分配 兩球的速度
+                                            // 白球速度 == 紅球速度 == 兩球的速度 和 /2
+        return true;
       }
+      else
+        return false;
     }
   }
 }

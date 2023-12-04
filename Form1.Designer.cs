@@ -141,7 +141,7 @@
       // txtPassword
       // 
       this.txtPassword.Cursor = System.Windows.Forms.Cursors.IBeam;
-      this.txtPassword.DefaultText = "";
+      this.txtPassword.DefaultText = "root";
       this.txtPassword.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
       this.txtPassword.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
       this.txtPassword.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));

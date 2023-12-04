@@ -39,6 +39,7 @@
       this.label2 = new System.Windows.Forms.Label();
       this.pnlTable = new Guna.UI2.WinForms.Guna2Panel();
       this.timer2 = new System.Windows.Forms.Timer(this.components);
+      this.chkStop = new System.Windows.Forms.CheckBox();
       this.SuspendLayout();
       // 
       // btnLogOut
@@ -151,12 +152,25 @@
       // 
       this.timer2.Enabled = true;
       // 
+      // chkStop
+      // 
+      this.chkStop.AutoSize = true;
+      this.chkStop.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.chkStop.Location = new System.Drawing.Point(423, 498);
+      this.chkStop.Name = "chkStop";
+      this.chkStop.Size = new System.Drawing.Size(120, 34);
+      this.chkStop.TabIndex = 71;
+      this.chkStop.Text = "碰撞停止";
+      this.chkStop.UseVisualStyleBackColor = true;
+      this.chkStop.CheckedChanged += new System.EventHandler(this.chkStop_CheckedChanged);
+      // 
       // Form2
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.BackColor = System.Drawing.Color.WhiteSmoke;
       this.ClientSize = new System.Drawing.Size(1022, 561);
+      this.Controls.Add(this.chkStop);
       this.Controls.Add(this.pnlTable);
       this.Controls.Add(this.label2);
       this.Controls.Add(this.label1);
@@ -186,5 +200,6 @@
     internal System.Windows.Forms.Label label2;
     private Guna.UI2.WinForms.Guna2Panel pnlTable;
     private System.Windows.Forms.Timer timer2;
+    private System.Windows.Forms.CheckBox chkStop;
   }
 }

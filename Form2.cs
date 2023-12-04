@@ -30,6 +30,12 @@ namespace prj2
       _user = user;
       _width = pnlTable.Width;
       _height = pnlTable.Height;
+
+      //currentContext = BufferedGraphicsManager.Current;
+      //gBuffer = currentContext.Allocate(
+      //          this.pnlTable.CreateGraphics(),
+      //          new Rectangle(0, 0, _width, _height));
+      //_g = gBuffer.Graphics;
     }
 
     #region form initialize
@@ -70,6 +76,9 @@ namespace prj2
     /// <param name="e"></param>
     private void pnlTable_Paint(object sender, PaintEventArgs e)
     {
+      //繪 背景
+      //_g.Clear(pnlTable.BackColor);
+
       for (int i = 0; i < 10; i++)
         _balls[i].draw(e.Graphics);
 
@@ -78,7 +87,10 @@ namespace prj2
 
       // 0號球停止時才畫指向 0號球(母球) 的球桿
       if (_balls[0].Speed < 0.0001)
-        _balls[0].drawStick(e.Graphics);     
+        _balls[0].drawStick(e.Graphics);
+
+      // 之後 送出 gBuffer 到繪圖裝置
+      //gBuffer.Render(e.Graphics);
     }
 
     /// <summary>
@@ -99,6 +111,17 @@ namespace prj2
 
       // 點擊點畫小方塊
       _g.DrawRectangle(Pens.HotPink, e.X - 2, e.Y - 2, 4, 4);
+    }
+
+    /// <summary>
+    /// 碰撞停止勾選框.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void chkStop_CheckedChanged(object sender, EventArgs e)
+    {
+      if (!chkStop.Checked)
+        timer1.Start();
     }
 
     /// <summary>
@@ -127,11 +150,21 @@ namespace prj2
         sum_spd += _balls[i].Speed;
 
         // 碰撞偵測
+        bool b;
         for (int j = i + 1; j < 10; j++)
-          _balls[i].hit(_balls[i], _balls[j]);
+        {
+          b = _balls[i].hit(_balls[i], _balls[j]);
+
+          // 在已經偵測到 碰撞裡
+          if (b && chkStop.Checked)
+          {
+            // 有打勾，計時暫停
+            timer1.Stop();
+            pnlTable.Refresh();  // 顯示球碰撞後重疊的情形
+          }
+        }
       }
     
-
       // 所有球都停了，停止計時器
       if (sum_spd <= 0.001)
       {  
@@ -140,8 +173,6 @@ namespace prj2
       }
     }
     #endregion
-
-    
 
     /// <summary>
     /// 每次擊球，重新初始化打擊力，摩擦力.
