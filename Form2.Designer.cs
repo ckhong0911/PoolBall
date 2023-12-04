@@ -40,6 +40,7 @@
       this.pnlTable = new Guna.UI2.WinForms.Guna2Panel();
       this.timer2 = new System.Windows.Forms.Timer(this.components);
       this.chkStop = new System.Windows.Forms.CheckBox();
+      this.pullBackButton = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // btnLogOut
@@ -57,7 +58,7 @@
       this.btnLogOut.FillColor2 = System.Drawing.Color.Blue;
       this.btnLogOut.Font = new System.Drawing.Font("Segoe UI", 12F);
       this.btnLogOut.ForeColor = System.Drawing.Color.White;
-      this.btnLogOut.Location = new System.Drawing.Point(853, 498);
+      this.btnLogOut.Location = new System.Drawing.Point(855, 22);
       this.btnLogOut.Name = "btnLogOut";
       this.btnLogOut.Size = new System.Drawing.Size(136, 41);
       this.btnLogOut.TabIndex = 58;
@@ -82,7 +83,7 @@
       this.btnHit.BackColor = System.Drawing.SystemColors.Control;
       this.btnHit.FlatStyle = System.Windows.Forms.FlatStyle.System;
       this.btnHit.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.btnHit.Location = new System.Drawing.Point(866, 22);
+      this.btnHit.Location = new System.Drawing.Point(709, 498);
       this.btnHit.Name = "btnHit";
       this.btnHit.Size = new System.Drawing.Size(123, 41);
       this.btnHit.TabIndex = 65;
@@ -100,7 +101,7 @@
       // 
       this.vScrollBar1.Location = new System.Drawing.Point(869, 107);
       this.vScrollBar1.Name = "vScrollBar1";
-      this.vScrollBar1.Size = new System.Drawing.Size(32, 362);
+      this.vScrollBar1.Size = new System.Drawing.Size(32, 329);
       this.vScrollBar1.SmallChange = 5;
       this.vScrollBar1.TabIndex = 66;
       // 
@@ -108,7 +109,7 @@
       // 
       this.vScrollBar2.Location = new System.Drawing.Point(954, 107);
       this.vScrollBar2.Name = "vScrollBar2";
-      this.vScrollBar2.Size = new System.Drawing.Size(32, 362);
+      this.vScrollBar2.Size = new System.Drawing.Size(32, 329);
       this.vScrollBar2.SmallChange = 5;
       this.vScrollBar2.TabIndex = 67;
       // 
@@ -156,7 +157,7 @@
       // 
       this.chkStop.AutoSize = true;
       this.chkStop.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.chkStop.Location = new System.Drawing.Point(423, 498);
+      this.chkStop.Location = new System.Drawing.Point(869, 453);
       this.chkStop.Name = "chkStop";
       this.chkStop.Size = new System.Drawing.Size(120, 34);
       this.chkStop.TabIndex = 71;
@@ -164,12 +165,26 @@
       this.chkStop.UseVisualStyleBackColor = true;
       this.chkStop.CheckedChanged += new System.EventHandler(this.chkStop_CheckedChanged);
       // 
+      // pullBackButton
+      // 
+      this.pullBackButton.BackColor = System.Drawing.SystemColors.Control;
+      this.pullBackButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+      this.pullBackButton.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.pullBackButton.Location = new System.Drawing.Point(866, 498);
+      this.pullBackButton.Name = "pullBackButton";
+      this.pullBackButton.Size = new System.Drawing.Size(123, 41);
+      this.pullBackButton.TabIndex = 72;
+      this.pullBackButton.Text = "拉回";
+      this.pullBackButton.UseVisualStyleBackColor = false;
+      this.pullBackButton.Click += new System.EventHandler(this.pullBackButton_Click);
+      // 
       // Form2
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.BackColor = System.Drawing.Color.WhiteSmoke;
       this.ClientSize = new System.Drawing.Size(1022, 561);
+      this.Controls.Add(this.pullBackButton);
       this.Controls.Add(this.chkStop);
       this.Controls.Add(this.pnlTable);
       this.Controls.Add(this.label2);
@@ -201,5 +216,6 @@
     private Guna.UI2.WinForms.Guna2Panel pnlTable;
     private System.Windows.Forms.Timer timer2;
     private System.Windows.Forms.CheckBox chkStop;
+    private System.Windows.Forms.Button pullBackButton;
   }
 }
