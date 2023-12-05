@@ -16,7 +16,8 @@ namespace prj2.Classes
     private double _cosA, _sinA;    // coSine 行進角度, Sine 行進角度
     private double _spd = 0;        // 球行進速度
     private double _fr = 0;         // 摩擦力
-    Graphics _g;                    // 繪圖物件
+    Graphics _g;
+
 
     /// <summary>
     /// Constructors.
@@ -53,15 +54,25 @@ namespace prj2.Classes
     /// </summary>
     public double Speed => _spd;
 
+    /// <summary>
+    /// Cos.
+    /// </summary>
+    public double CosA => _cosA;
+
+    /// <summary>
+    /// Sin.
+    /// </summary>
+    public double SinA => _sinA;
+
 
     /* =====Method area===== */
     /// <summary>
     /// 畫球.
     /// </summary>
-    public void draw()
+    public void draw(Graphics g)
     {
       // 畫橢圓（球刷子，左上角 坐標，直徑寬，直徑高）
-      _g.FillEllipse(_br, (int)(_x - _r), (int)(_y - _r), _r2, _r2);
+      g.FillEllipse(_br, (int)(_x - _r), (int)(_y - _r), _r2, _r2);
     }
 
     /// <summary>
@@ -78,7 +89,7 @@ namespace prj2.Classes
     /// <summary>
     /// 畫球桿.
     /// </summary>
-    public void drawStick()
+    public void drawStick(Graphics g)
     {
       double r12 = 12 * _r;
 
@@ -89,7 +100,7 @@ namespace prj2.Classes
       skyBluePen.Width = 3.0F;   
 
       // 深藍色畫筆
-      _g.DrawLine(skyBluePen,      
+      g.DrawLine(skyBluePen,      
            (float)(_x - r12 * _cosA), (float)(_y - r12 * _sinA),    //  12倍大的同心圓周上的點
            (float)(_x - _r * _cosA), (float)(_y - _r * _sinA)       //  球圓周上的點 - r12 -r, 使球杆畫在滑鼠點的另一邊
       );
@@ -188,7 +199,7 @@ namespace prj2.Classes
     }
 
     // 球 碰撞後 拉回到正好接觸點
-    public static void pullBack(Ball b0, Ball b1)
+    public void pullBack(Ball b0, Ball b1)
     {
       //用整數距離大概 回拉趨近（小於1個 像素 也無法顯示位置區別）
       int _r2 = 20;
@@ -208,32 +219,31 @@ namespace prj2.Classes
     }
 
     // 都 從 b0 球心 開始劃線，才容易看出平行4邊型
-    public static void ball_Line(Ball b0, Ball bx, Pen p)
+    public void ball_Line(Ball b0, Ball bx, Pen p)
     {
-      Graphics g = null;
       double x1 = b0._x, y1 = b0._y;   //  起點坐標  為 b0 球心
       double x2 = x1 + 7 * bx._spd * bx._cosA, y2 = y1 + 7 * bx._spd * bx._sinA;  // spd 為 球bx的速度, 線長度 為7倍 spd
-      g.DrawLine(p, (int)x1, (int)y1, (int)x2, (int)y2);  // 從點（x1,y1）畫到 （x2,y2），箭頭在尾端（x2,y2）
+      _g.DrawLine(p, (int)x1, (int)y1, (int)x2, (int)y2);  // 從點（x1,y1）畫到 （x2,y2），箭頭在尾端（x2,y2）
     }
 
-    public static void pullBackAction(Ball b0, Ball b1)
-    {
-      Pen _penRed = null, _penGreen = null, _penBlue = null;  // 宣告 3 支筆，碰撞後  暫停時 就要繪圖，固定宣告省事
-      ball_Line(b0, b0, _penRed);  //  先畫 球 b0 原來 行進方向線，紅色
-                                      //（先大略做）碰撞 後 方向，力量 分配
-                                      // 白球速度 == 紅球速度 == 兩球的速度 和 /2
-      double spd_average = (b0._spd + b1._spd) / 2.0;
-      b0._spd = b1._spd = spd_average;    //  碰撞 後 先大略平均分配 兩球的速度
+    //public static void pullBackAction(Ball b0, Ball b1)
+    //{
+    //  Pen _penRed = null, _penGreen = null, _penBlue = null;  // 宣告 3 支筆，碰撞後  暫停時 就要繪圖，固定宣告省事
+    //  ball_Line(b0, b0, _penRed, g);  //  先畫 球 b0 原來 行進方向線，紅色
+    //                                  //（先大略做）碰撞 後 方向，力量 分配
+    //                                  // 白球速度 == 紅球速度 == 兩球的速度 和 /2
+    //  double spd_average = (b0._spd + b1._spd) / 2.0;
+    //  b0._spd = b1._spd = spd_average;    //  碰撞 後 先大略平均分配 兩球的速度
 
-      double dx = b1._x - b0._x;
-      double dy = b1._y - b0._y;
-      double ang = Math.Atan2(dy, dx);   //  球b0 中心 到 球b1 中心 連線方向
+    //  double dx = b1._x - b0._x;
+    //  double dy = b1._y - b0._y;
+    //  double ang = Math.Atan2(dy, dx);   //  球b0 中心 到 球b1 中心 連線方向
 
-      b1.setAng(ang);
-      ball_Line(b0, b1, _penGreen);      //  畫 球 b1 碰撞後 行進方向線，綠色
+    //  b1.setAng(ang);
+    //  ball_Line(b0, b1, _penGreen);      //  畫 球 b1 碰撞後 行進方向線，綠色
 
-      b0.setAng(ang + Math.PI / 2.0);   // b1 碰撞後方向 = b1 碰撞後方向 + 90度
-      ball_Line(b0, b0, _penBlue);  //  畫 球 b0 碰撞後 行進方向線，藍色
-    }
+    //  b0.setAng(ang + Math.PI / 2.0);   // b1 碰撞後方向 = b1 碰撞後方向 + 90度
+    //  ball_Line(b0, b0, _penBlue);  //  畫 球 b0 碰撞後 行進方向線，藍色
+    //}
   }
 }

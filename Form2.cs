@@ -17,9 +17,9 @@ namespace prj2
     int _r = 10, _r2 = 20;                  // 半徑，直徑
     private Ball[] _balls = new Ball[10];   // 10 顆球的陣列
     //BufferedGraphicsContext currentContext;
-    BufferedGraphics gBuffer;
+    //BufferedGraphics gBuffer;
     int _width = 0, _height = 0;  // 球桌  寬，高
-    int b0id, b1id;   // 用來記錄 需 拉回的球 的號碼
+    int _b0id, _b1id;   // 用來記錄 需 拉回的球 的號碼
     Pen penRed, penGreen, penBlue;   // 宣告 3 支筆，碰撞後  暫停時 就要繪圖，固定宣告省事
 
     /// <summary>
@@ -39,6 +39,10 @@ namespace prj2
       penGreen = new Pen(Color.Green, 3);  //（顏色 綠，線寬度3像素）
       penBlue = new Pen(Color.Blue, 3);  //（顏色 藍，線寬度3像素）
       penRed.EndCap = penGreen.EndCap = penBlue.EndCap = LineCap.ArrowAnchor;  // 箭頭尾端
+
+      //currentContext = BufferedGraphicsManager.Current;
+      //gBuffer = currentContext.Allocate(this.pnlTable.CreateGraphics(), new Rectangle(0, 0, _width, _height));
+      //_g = gBuffer.Graphics;
     }
 
     #region form initialize
@@ -73,13 +77,35 @@ namespace prj2
 
     private void pullBackButton_Click(object sender, EventArgs e)
     {
-      Ball.pullBack(_balls[b0id], _balls[b1id]);  // 按 按鈕 後拉回
+      _balls[0].pullBack(_balls[_b0id], _balls[_b1id]);  // 按 按鈕 後拉回
       pnlTable.Refresh(); // 顯示 球 拉回後 沒重疊，正好互相接觸的情形
+      ball_Line(_balls[0], _balls[0], penRed);  //  先畫 球 b0 原來 行進方向線，紅色
+                                  //（先大略做）碰撞 後 方向，力量 分配
+                                  // 白球速度 == 紅球速度 == 兩球的速度 和 /2
+      double spd_average = (_balls[0].Speed + _balls[1].Speed) / 2.0;
+      _balls[0].setSpeed(spd_average);  // 碰撞 後 先大略平均分配 兩球的速度
+      _balls[1].setSpeed(spd_average);
 
-      Ball.pullBackAction(_balls[b0id], _balls[b1id]);
-      gBuffer.Render();  // 顯示 球 碰撞後 a,b,c 3條行進方向線
+      double dx = _balls[1].X - _balls[0].X;
+      double dy = _balls[1].Y - _balls[0].Y;
+      double ang = Math.Atan2(dy, dx);   //  球b0 中心 到 球b1 中心 連線方向
+      _balls[1].setAng(ang);
+      ball_Line(_balls[0], _balls[1], penGreen);      //  畫 球 b1 碰撞後 行進方向線，綠色
+
+      _balls[0].setAng(ang + Math.PI / 2.0);   // b1 碰撞後方向 = b1 碰撞後方向 + 90度
+      ball_Line(_balls[0], _balls[0], penBlue);  //  畫 球 b0 碰撞後 行進方向線，藍色
+      /* gBuffer.Render();*/  // 顯示 球 碰撞後 a,b,c 3條行進方向線
+
+
     }
-    
+
+    // 都 從 b0 球心 開始劃線，才容易看出平行4邊型
+    private void ball_Line(Ball b0, Ball bx, Pen p)
+    {
+      double x1 = b0.X, y1 = b0.Y;   //  起點坐標  為 b0 球心
+      double x2 = x1 + 7 * bx.Speed * bx.CosA, y2 = y1 + 7 * bx.Speed * bx.SinA;  // spd 為 球bx的速度, 線長度 為7倍 spd
+      _g.DrawLine(p, (int)x1, (int)y1, (int)x2, (int)y2);  // 從點（x1,y1）畫到 （x2,y2），箭頭在尾端（x2,y2）
+    }
 
     #region panel event
     /// <summary>
@@ -177,8 +203,13 @@ namespace prj2
 
             // 等按 pullBackButton按鈕 才拉回
             // 記錄需 拉回的球 的號碼 給 pullBack 副程式用
-            b0id = _balls[i].Id; 
-            b1id = _balls[j].Id;
+            _b0id = _balls[i].Id; 
+            _b1id = _balls[j].Id;
+          }
+          else
+          {
+            //拉回到正好接觸點 後， 再去算碰撞角度 才會正確
+            _balls[0].pullBack(_balls[0], _balls[1]);  // 沒暫停，不等 按按鈕 就拉回
           }
         }
       }
