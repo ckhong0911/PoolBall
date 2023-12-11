@@ -75,38 +75,6 @@ namespace prj2
     }
     #endregion
 
-    private void pullBackButton_Click(object sender, EventArgs e)
-    {
-      _balls[0].pullBack(_balls[_b0id], _balls[_b1id]);  // 按 按鈕 後拉回
-      pnlTable.Refresh(); // 顯示 球 拉回後 沒重疊，正好互相接觸的情形
-      ball_Line(_balls[0], _balls[0], penRed);  //  先畫 球 b0 原來 行進方向線，紅色
-                                  //（先大略做）碰撞 後 方向，力量 分配
-                                  // 白球速度 == 紅球速度 == 兩球的速度 和 /2
-      double spd_average = (_balls[0].Speed + _balls[1].Speed) / 2.0;
-      _balls[0].setSpeed(spd_average);  // 碰撞 後 先大略平均分配 兩球的速度
-      _balls[1].setSpeed(spd_average);
-
-      double dx = _balls[1].X - _balls[0].X;
-      double dy = _balls[1].Y - _balls[0].Y;
-      double ang = Math.Atan2(dy, dx);   //  球b0 中心 到 球b1 中心 連線方向
-      _balls[1].setAng(ang);
-      ball_Line(_balls[0], _balls[1], penGreen);      //  畫 球 b1 碰撞後 行進方向線，綠色
-
-      _balls[0].setAng(ang + Math.PI / 2.0);   // b1 碰撞後方向 = b1 碰撞後方向 + 90度
-      ball_Line(_balls[0], _balls[0], penBlue);  //  畫 球 b0 碰撞後 行進方向線，藍色
-      /* gBuffer.Render();*/  // 顯示 球 碰撞後 a,b,c 3條行進方向線
-
-
-    }
-
-    // 都 從 b0 球心 開始劃線，才容易看出平行4邊型
-    private void ball_Line(Ball b0, Ball bx, Pen p)
-    {
-      double x1 = b0.X, y1 = b0.Y;   //  起點坐標  為 b0 球心
-      double x2 = x1 + 7 * bx.Speed * bx.CosA, y2 = y1 + 7 * bx.Speed * bx.SinA;  // spd 為 球bx的速度, 線長度 為7倍 spd
-      _g.DrawLine(p, (int)x1, (int)y1, (int)x2, (int)y2);  // 從點（x1,y1）畫到 （x2,y2），箭頭在尾端（x2,y2）
-    }
-
     #region panel event
     /// <summary>
     /// 畫出10顆球.
@@ -153,17 +121,6 @@ namespace prj2
     }
 
     /// <summary>
-    /// 碰撞停止勾選框.
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void chkStop_CheckedChanged(object sender, EventArgs e)
-    {
-      if (!chkStop.Checked)
-        timer1.Start();
-    }
-
-    /// <summary>
     /// 計時器事件.
     /// </summary>
     /// <param name="sender"></param>
@@ -182,35 +139,16 @@ namespace prj2
         // 應用摩擦力
         if (i != 0)  // 排除母球
         {
-          double friction = 0.05;
+          double friction = 0.03;
           _balls[i].setFriction(friction);
         }
 
         sum_spd += _balls[i].Speed;
 
         // 碰撞偵測
-        bool b;
         for (int j = i + 1; j < 10; j++)
         {
-          b = _balls[i].hit(_balls[i], _balls[j]);
-
-          // 在已經偵測到 碰撞裡
-          if (b && chkStop.Checked)
-          {
-            // 有打勾，計時暫停
-            timer1.Stop();
-            pnlTable.Refresh();  // 顯示球碰撞後重疊的情形
-
-            // 等按 pullBackButton按鈕 才拉回
-            // 記錄需 拉回的球 的號碼 給 pullBack 副程式用
-            _b0id = _balls[i].Id; 
-            _b1id = _balls[j].Id;
-          }
-          else
-          {
-            //拉回到正好接觸點 後， 再去算碰撞角度 才會正確
-            _balls[0].pullBack(_balls[0], _balls[1]);  // 沒暫停，不等 按按鈕 就拉回
-          }
+          hit(_balls[i], _balls[j]);
         }
       }
     
@@ -220,6 +158,81 @@ namespace prj2
         timer1.Stop();
         pnlTable.Refresh();
       }
+    }
+    #endregion
+
+    #region method
+    private void hit(Ball b0, Ball b1)
+    {
+      // b1 hit  b0  速度快的撞慢的
+      if (b0._spd < b1._spd)
+      {
+        Ball t = b0;     //  交換球，讓速度快的球成為 b0
+        b0 = b1;
+        b1 = t;
+      }
+
+      double dx = b1._x - b0._x;
+      double dy = b1._y - b0._y;
+
+      if (Math.Abs(dx) <= _r2 && Math.Abs(dy) <= _r2)
+      {
+        // 在已經偵測到 碰撞裡
+        if (chkStop.Checked)
+        {
+          // 有打勾，計時暫停
+          timer1.Stop();
+          pnlTable.Refresh();  // 顯示球碰撞後重疊的情形
+
+          // 等按 pullBackButton按鈕 才拉回
+          // 記錄需 拉回的球 的號碼 給 pullBack 副程式用
+          _b0id = b0.Id;
+          _b1id = b1.Id;
+        }
+        else
+        {
+          //拉回到正好接觸點 後， 再去算碰撞角度 才會正確
+          pullBack(_balls[0], _balls[1]);  // 沒暫停，不等 按按鈕 就拉回
+        }
+
+        // X 坐標間差距 < 球直徑
+        // 而且　　y坐標間差距 < 球直徑
+        double ang = Math.Atan2(dy, dx);   //  球b0 中心 到 球b1 中心 連線方向
+        b1.setAng(ang);     //  球b1 被撞後方向
+        b0.setAng(ang + Math.PI / 2.0);   //  球b0  碰撞 b1 后 和 b1 的夾角 90° 
+
+        double spd_average = (b0._spd + b1._spd) / 2.0;
+        b0._spd = b1._spd = spd_average;    // 碰撞後 先大略平均分配 兩球的速度
+                                            // 白球速度 == 紅球速度 == 兩球的速度 和 /2
+      }
+    }
+
+    private void pullBack(Ball b0, Ball b1)
+    {
+      //用整數距離大概 回拉趨近（小於1個 像素 也無法顯示位置區別）
+      int r2 = 20;
+      int r2r2 = r2 * r2;    // 2顆球的距離的平方，省略開根號用
+      int r4 = 2 * r2;       // 2顆球的距離	
+      for (int px = 0; px < r4; px++) // 最多回拉2顆球的距離
+                                      // 平方值 相比，可以省略開根號，減少運算
+        if (((b0._x - b1._x) * (b0._x - b1._x) + (b0._y - b1._y) * (b0._y - b1._y)) <= r2r2)
+        { // 距離還太小，繼續回拉
+          b0._x -= b0.CosA;
+          b0._y -= b0.SinA;  // 每次往回移動量  == 1 像素
+        }
+        else break;
+    }
+
+    // 都 從 b0 球心 開始劃線，才容易看出平行4邊型
+    private void ball_Line(Ball b0, Ball bx, Pen p)
+    {
+      double x1 = b0._x;
+      double y1 = b0._y;   //  起點坐標  為 b0 球心
+
+      double x2 = x1 + 7 * bx._spd * bx.CosA;
+      double y2 = y1 + 7 * bx._spd * bx.SinA;  // spd 為 球bx的速度, 線長度 為7倍 spd
+
+      _g.DrawLine(p, (int)x1, (int)y1, (int)x2, (int)y2);  // 從點（x1,y1）畫到 （x2,y2），箭頭在尾端（x2,y2）
     }
     #endregion
 
@@ -240,6 +253,30 @@ namespace prj2
       timer1.Start();
     }
 
+    private void pullBackButton_Click(object sender, EventArgs e)
+    {
+      // 行進方向(紅色)
+      pullBack(_balls[0], _balls[_b1id]);
+      pnlTable.Refresh();
+      ball_Line(_balls[0], _balls[0], penRed);
+
+      // 碰撞 後 先大略平均分配 兩球的速度
+      double spd_average = (_balls[0].Speed + _balls[_b1id].Speed) / 2.0;
+      _balls[0].setSpeed(spd_average);
+      _balls[_b1id].setSpeed(spd_average);
+
+      // 球心互連(綠色)
+      double dx = _balls[_b1id].X - _balls[0].X;
+      double dy = _balls[_b1id].Y - _balls[0].Y;
+      double ang = Math.Atan2(dy, dx);
+      _balls[_b1id].setAng(ang);
+      ball_Line(_balls[0], _balls[_b1id], penGreen);
+
+      // 白球行進方向(藍色)
+      _balls[0].setAng(ang + Math.PI / 2.0);
+      ball_Line(_balls[0], _balls[0], penBlue);
+    }
+
     /// <summary>
     /// 回首頁.
     /// </summary>
@@ -247,6 +284,17 @@ namespace prj2
     {
       this.Hide();
       Owner.Show();
+    }
+
+    /// <summary>
+    /// 碰撞停止勾選框.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void chkStop_CheckedChanged(object sender, EventArgs e)
+    {
+      if (!chkStop.Checked)
+        timer1.Start();
     }
   }
 }
