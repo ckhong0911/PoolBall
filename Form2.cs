@@ -14,7 +14,7 @@ namespace prj2
     private readonly User _user;
     private static Graphics _g;	            // 繪圖裝置
     public double _x = 0, _y = 0;           // 球心坐標
-    int _r = 10, _r2 = 20;                  // 半徑，直徑
+    int _r2 = 20;                  // 半徑，直徑
     private Ball[] _balls = new Ball[10];   // 10 顆球的陣列
     //BufferedGraphicsContext currentContext;
     //BufferedGraphics gBuffer;
@@ -139,7 +139,7 @@ namespace prj2
         // 應用摩擦力
         if (i != 0)  // 排除母球
         {
-          double friction = 0.03;
+          double friction = 0.05;
           _balls[i].setFriction(friction);
         }
 
@@ -192,27 +192,26 @@ namespace prj2
         else
         {
           //拉回到正好接觸點 後， 再去算碰撞角度 才會正確
-          pullBack(_balls[0], _balls[1]);  // 沒暫停，不等 按按鈕 就拉回
+          pullBack(b0, b1);  // 沒暫停，不等 按按鈕 就拉回
+        
+          // X 坐標間差距 < 球直徑
+          // 而且　　y坐標間差距 < 球直徑
+          double ang = Math.Atan2(dy, dx);   //  球b0 中心 到 球b1 中心 連線方向
+          b1.setAng(ang);     //  球b1 被撞後方向
+          b0.setAng(ang + Math.PI / 2.0);   //  球b0  碰撞 b1 后 和 b1 的夾角 90° 
+
+          double spd_average = (b0._spd + b1._spd) / 2.0;
+          b0._spd = b1._spd = spd_average;    // 碰撞後 先大略平均分配 兩球的速度
+                                              // 白球速度 == 紅球速度 == 兩球的速度 和 /2
         }
-
-        // X 坐標間差距 < 球直徑
-        // 而且　　y坐標間差距 < 球直徑
-        double ang = Math.Atan2(dy, dx);   //  球b0 中心 到 球b1 中心 連線方向
-        b1.setAng(ang);     //  球b1 被撞後方向
-        b0.setAng(ang + Math.PI / 2.0);   //  球b0  碰撞 b1 后 和 b1 的夾角 90° 
-
-        double spd_average = (b0._spd + b1._spd) / 2.0;
-        b0._spd = b1._spd = spd_average;    // 碰撞後 先大略平均分配 兩球的速度
-                                            // 白球速度 == 紅球速度 == 兩球的速度 和 /2
       }
     }
 
     private void pullBack(Ball b0, Ball b1)
     {
       //用整數距離大概 回拉趨近（小於1個 像素 也無法顯示位置區別）
-      int r2 = 20;
-      int r2r2 = r2 * r2;    // 2顆球的距離的平方，省略開根號用
-      int r4 = 2 * r2;       // 2顆球的距離	
+      int r2r2 = _r2 * _r2;    // 2顆球的距離的平方，省略開根號用
+      int r4 = 2 * _r2;       // 2顆球的距離	
       for (int px = 0; px < r4; px++) // 最多回拉2顆球的距離
                                       // 平方值 相比，可以省略開根號，減少運算
         if (((b0._x - b1._x) * (b0._x - b1._x) + (b0._y - b1._y) * (b0._y - b1._y)) <= r2r2)
