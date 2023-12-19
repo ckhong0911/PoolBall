@@ -193,18 +193,46 @@ namespace prj2
         {
           //拉回到正好接觸點 後， 再去算碰撞角度 才會正確
           pullBack(b0, b1);  // 沒暫停，不等 按按鈕 就拉回
-        
+          hit_speed(b0, b1);
           // X 坐標間差距 < 球直徑
           // 而且　　y坐標間差距 < 球直徑
-          double ang = Math.Atan2(dy, dx);   //  球b0 中心 到 球b1 中心 連線方向
-          b1.setAng(ang);     //  球b1 被撞後方向
-          b0.setAng(ang + Math.PI / 2.0);   //  球b0  碰撞 b1 后 和 b1 的夾角 90° 
+          //double ang = Math.Atan2(dy, dx);   //  球b0 中心 到 球b1 中心 連線方向
+          //b1.setAng(ang);     //  球b1 被撞後方向
+          //b0.setAng(ang + Math.PI / 2.0);   //  球b0  碰撞 b1 后 和 b1 的夾角 90° 
 
-          double spd_average = (b0._spd + b1._spd) / 2.0;
-          b0._spd = b1._spd = spd_average;    // 碰撞後 先大略平均分配 兩球的速度
-                                              // 白球速度 == 紅球速度 == 兩球的速度 和 /2
+          //double spd_average = (b0._spd + b1._spd) / 2.0;
+          //b0._spd = b1._spd = spd_average;    // 碰撞後 先大略平均分配 兩球的速度
+          // 白球速度 == 紅球速度 == 兩球的速度 和 /2
         }
       }
+    }
+
+    private void hit_speed(Ball b0, Ball b1)  //b0 碰撞 b1(b1是靜止的)
+    {
+      double b1ang = Math.Atan2(b1.Y - b0.Y, b1.X - b0.X);  // 兩球心連線方向
+
+      b1.setAng(b1ang);  // b1 的碰撞 後方向 = 兩球心連線方向
+                         // 原大小(b0.spd）*cos(夾角) = 球心連線方向分量大小 = b1的碰撞 後速度大小
+                         // 夾角 = b0.ang - 兩球心連線方向(b1.ang)
+      b1.setSpeed(Math.Abs(b0.Speed));  //Abs：絕對值（正值）
+
+      // b0 垂直方向分量(v2x, v2y)  = b0 原向量 減 b0球心連線方向分量
+      //   = b0 的向量  -  b1 的向量（因為b1碰撞後 已經得到 b0的 球心連線方向 分量）
+      //  極坐標 （spd, ang）需要先轉換 成 直角坐標（x, y）才能相減
+      double v0x = b0.Speed * b0.CosA;
+      double v0y = b0.Speed * b0.SinA;
+      double v1x = b1.Speed * b1.CosA;
+      double v1y = b1.Speed * b1.SinA;
+
+      // v2x = v0x - v1x;
+      double v2x = v0x - v1x;
+      // v2y = v0y - v1y;
+      double v2y = v0y - v1y;
+
+      // 垂直於球心連線分量(v2x, v2y)  轉換 成 極坐標 存入(b0.spd, b0.ang)
+      double v2ang = Math.Atan2(v2x, v2y);
+      b0.setAng(v2ang);
+      b0.setSpeed(Math.Sqrt(Math.Pow(v2x, 2) + Math.Pow(v2y, 2)));
     }
 
     private void pullBack(Ball b0, Ball b1)
@@ -263,6 +291,7 @@ namespace prj2
       double spd_average = (_balls[0].Speed + _balls[_b1id].Speed) / 2.0;
       _balls[0].setSpeed(spd_average);
       _balls[_b1id].setSpeed(spd_average);
+      //hit_speed(_balls[0], _balls[_b1id]);
 
       // 球心互連(綠色)
       double dx = _balls[_b1id].X - _balls[0].X;
