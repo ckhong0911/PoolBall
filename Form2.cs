@@ -193,15 +193,15 @@ namespace prj2
         {
           //拉回到正好接觸點 後， 再去算碰撞角度 才會正確
           pullBack(b0, b1);  // 沒暫停，不等 按按鈕 就拉回
-          hit_speed(b0, b1);
+          //hit_speed(b0, b1);
           // X 坐標間差距 < 球直徑
           // 而且　　y坐標間差距 < 球直徑
-          //double ang = Math.Atan2(dy, dx);   //  球b0 中心 到 球b1 中心 連線方向
-          //b1.setAng(ang);     //  球b1 被撞後方向
-          //b0.setAng(ang + Math.PI / 2.0);   //  球b0  碰撞 b1 后 和 b1 的夾角 90° 
+          double ang = Math.Atan2(dy, dx);   //  球b0 中心 到 球b1 中心 連線方向
+          b1.setAng(ang);     //  球b1 被撞後方向
+          b0.setAng(ang + Math.PI / 2.0);   //  球b0  碰撞 b1 后 和 b1 的夾角 90° 
 
-          //double spd_average = (b0._spd + b1._spd) / 2.0;
-          //b0._spd = b1._spd = spd_average;    // 碰撞後 先大略平均分配 兩球的速度
+          double spd_average = (b0._spd + b1._spd) / 2.0;
+          b0._spd = b1._spd = spd_average;    // 碰撞後 先大略平均分配 兩球的速度
           // 白球速度 == 紅球速度 == 兩球的速度 和 /2
         }
       }

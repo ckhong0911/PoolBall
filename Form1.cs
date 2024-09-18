@@ -35,7 +35,7 @@ namespace prj2
     /// <param name="e"></param>
     private void btnLogin_Click(object sender, EventArgs e)
     {
-      if (txtAccount.Text != "root" && txtPassword.Text != "root")
+      if (txtAccount.Text != "root" || txtPassword.Text != "root")
       {
         Alert.wBox("密碼錯誤", "Error");
         txtPassword.Text = "";
@@ -47,7 +47,8 @@ namespace prj2
       User user = new User(txtAccount.Text);
 
       // 進入主畫面
-      Form2 f2 = new Form2(user);
+      //Form2 f2 = new Form2(user);
+      Form3 f2 = new Form3();
       f2.Owner = this;
       this.Hide();      // 登入表單隱藏
       f2.ShowDialog();  // 執行強制回應視窗
