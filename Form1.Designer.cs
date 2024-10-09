@@ -67,9 +67,9 @@
             this.Label3.ForeColor = System.Drawing.Color.White;
             this.Label3.Location = new System.Drawing.Point(23, 12);
             this.Label3.Name = "Label3";
-            this.Label3.Size = new System.Drawing.Size(207, 31);
+            this.Label3.Size = new System.Drawing.Size(72, 31);
             this.Label3.TabIndex = 17;
-            this.Label3.Text = "FJCU - 我是標題";
+            this.Label3.Text = "FJCU";
             // 
             // txtAccount
             // 

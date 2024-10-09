@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace prj2.Classes
 {
-  internal class Ball
+  internal class Balls
   {
     // Attributes.
     int _id;                        // 球編號
@@ -25,7 +25,7 @@ namespace prj2.Classes
     /// <param name="by"></param>
     /// <param name="cc"></param>
     /// <param name="i"></param>
-    public Ball(int bx, int by, Color cc, int i)
+    public Balls(int bx, int by, Color cc, int i)
     {
       _x = bx;                      // 球心 x 坐標
       _y = by;                      // 球心 y 坐標

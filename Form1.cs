@@ -1,12 +1,4 @@
-﻿using prj2.Classes;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Forms;
 
 namespace prj2
@@ -19,36 +11,16 @@ namespace prj2
     }
 
     /// <summary>
-    /// 關閉表單後完整退出.
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void Login_FormClosed(object sender, FormClosedEventArgs e)
-    {
-      Environment.Exit(Environment.ExitCode);
-    }
-
-    /// <summary>
-    /// 登入按鈕.
+    /// 進入遊戲按鈕.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void btnLogin_Click(object sender, EventArgs e)
     {
-      if (txtAccount.Text != "root" || txtPassword.Text != "root")
-      {
-        Alert.wBox("密碼錯誤", "Error");
-        txtPassword.Text = "";
-        txtPassword.Focus();
-        return;
-      }
+      txtPassword.Text = ""; // 清除密碼
 
-      txtPassword.Text = "";
-      User user = new User(txtAccount.Text);
-
-      // 進入主畫面
-      //Form2 f2 = new Form2(user);
-      Form3 f2 = new Form3();
+      // 進入遊戲主畫面
+      Form2 f2 = new Form2();
       f2.Owner = this;
       this.Hide();      // 登入表單隱藏
       f2.ShowDialog();  // 執行強制回應視窗
