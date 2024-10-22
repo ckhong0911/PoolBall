@@ -9,6 +9,7 @@ namespace prj2
     {
         static Graphics g;	           // 繪圖裝置（一個就夠了）
         static int r = 10, r2 = 20;    // 半徑，直徑
+        static double fr = 0;          // 摩擦力
 
         /// <summary>
         /// 球類別.
@@ -21,6 +22,7 @@ namespace prj2
             SolidBrush br;                 // 刷子（畫球用）
             private double ang = 0;        // ex4：球 行進角度
             public double cosA, sinA;      // ex4：coSine 行進角度, Sine 行進角度
+            public double spd = 0;         // ex5：球行進速度
 
             /// <summary>
             /// 建構者.
@@ -71,6 +73,22 @@ namespace prj2
                      (float)(x - r * cosA), (float)(y - r * sinA)        //  球 圓周上的點
                 );                                                       // - r12   -r , 使球杆 畫在滑鼠點的另一邊
             }
+
+            /// <summary>
+            /// (練習5)移動球.
+            /// </summary>
+            public void move()
+            {
+                //  速度 > 0 才移動
+                if (spd > 0)
+                {  
+                    x += spd * cosA;   //  x 方向分量
+                    y += spd * sinA;   //  y 方向分量
+                    spd -= fr;         //  速度依摩擦力大小遞減
+                }
+                //  避免 < 0 而反向移動
+                else spd = 0;
+            }
         }
 
         Ball[] balls = new Ball[10];   // 10 顆球的陣列宣告
@@ -94,6 +112,7 @@ namespace prj2
             balls[0].setAng(Math.PI / 4);
         }
 
+        #region Panel事件
         /// <summary>
         /// Panel Paint(繪圖)事件.
         /// </summary>
@@ -105,6 +124,10 @@ namespace prj2
                 balls[i].draw(e.Graphics);  // 每個球畫自己
 
             balls[0].drawStick(e.Graphics);   // ex4：畫指向0號球(母球)的球桿
+
+            // (練習5)0號球停止時才畫指向0號球(母球)的球桿
+            if (balls[0].spd < 0.0001)
+                balls[0].drawStick(e.Graphics);
         }
 
         /// <summary>
@@ -119,6 +142,40 @@ namespace prj2
             pnlTable.Refresh();   // 重新繪畫轉動過的球桿
             g.DrawRectangle(Pens.HotPink, e.X - 2, e.Y - 2, 4, 4);   // 點擊點畫小方塊
         }
+        #endregion
+
+        /// <summary>
+        /// 計時器.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            double sum_spd = 0;    // 球速度加總
+            pnlTable.Refresh();    // 呼叫panel1_Paint 事件處理副程式
+            for (int i = 0; i < 10; i++)
+            {
+                balls[i].move();   // 移動球
+                sum_spd += balls[i].spd;
+            }
+
+            // 所有球都停了
+            if (sum_spd <= 0.001)
+            {  
+                timer1.Stop();	   // 停止計時器
+                pnlTable.Refresh();
+            }
+        }
+
+        #region 練習5
+        private void hit_button_Click(object sender, EventArgs e)
+        {
+            // 每次擊球，重新初始化打擊力，摩擦力
+            balls[0].spd = vScrollBar1.Maximum - vScrollBar1.Value; // 母球 加 速度
+            fr = (vScrollBar2.Maximum - vScrollBar2.Value) / 50.0;  // 摩擦力
+            timer1.Enabled = true;  // 開始定時 呼叫timer1_Tick
+        }
+        #endregion
 
         #region 練習2
         private void Form2_Load(object sender, EventArgs e)
