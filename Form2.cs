@@ -123,7 +123,8 @@ namespace prj2
             for (int i = 0; i < 10; i++)    // 10 顆球
                 balls[i].draw(e.Graphics);  // 每個球畫自己
 
-            balls[0].drawStick(e.Graphics);   // ex4：畫指向0號球(母球)的球桿
+            // ex4：畫指向0號球(母球)的球桿(練習5要註解掉，使用下列if判斷式)
+            //balls[0].drawStick(e.Graphics);   
 
             // (練習5)0號球停止時才畫指向0號球(母球)的球桿
             if (balls[0].spd < 0.0001)
