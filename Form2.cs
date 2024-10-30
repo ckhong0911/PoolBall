@@ -10,6 +10,7 @@ namespace prj2
         static Graphics g;	           // 繪圖裝置（一個就夠了）
         static int r = 10, r2 = 20;    // 半徑，直徑
         static double fr = 0;          // 摩擦力
+        static int width = 0, height = 0;  // 球桌寬, 高
 
         /// <summary>
         /// 球類別.
@@ -89,6 +90,29 @@ namespace prj2
                 //  避免 < 0 而反向移動
                 else spd = 0;
             }
+
+            /// <summary>
+            /// 球碰到邊反彈.
+            /// </summary>
+            public void rebound()
+            {  //球碰邊反彈，或進洞
+                if (x < r || x > width - r)
+                {  //出左右邊
+                    setAng(Math.PI - ang);
+                    if (x < r)
+                        x = r;    // 拉回桌 內
+                    else
+                        x = width - r;
+                }
+                else if (y < r || y > height - r)
+                { //出上下邊
+                    setAng(-ang);
+                    if (y < r)
+                        y = r;    //拉回桌 內
+                    else
+                        y = height - r;
+                }
+            }
         }
 
         Ball[] balls = new Ball[10];   // 10 顆球的陣列宣告
@@ -99,6 +123,10 @@ namespace prj2
         public Form2()
         {
             InitializeComponent();
+
+            // ex6：撞球桌邊界
+            width = pnlTable.Width;
+            height = pnlTable.Height;
 
             g = pnlTable.CreateGraphics();     // 繪圖裝置初始化
             // new 每個球，ball 建構者參數見 work_note3 說明
@@ -154,9 +182,11 @@ namespace prj2
         {
             double sum_spd = 0;    // 球速度加總
             pnlTable.Refresh();    // 呼叫panel1_Paint 事件處理副程式
+
             for (int i = 0; i < 10; i++)
             {
-                balls[i].move();   // 移動球
+                balls[i].move();    // 移動球
+                balls[i].rebound(); // 碰邊反彈
                 sum_spd += balls[i].spd;
             }
 
