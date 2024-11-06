@@ -188,6 +188,10 @@ namespace prj2
                 balls[i].move();    // 移動球
                 balls[i].rebound(); // 碰邊反彈
                 sum_spd += balls[i].spd;
+
+                // j > i 兩球間不重複碰撞偵測
+                for (int j = i + 1; j < 10; j++)  
+                    hit(balls[i], balls[j]);
             }
 
             // 所有球都停了
@@ -197,6 +201,40 @@ namespace prj2
                 pnlTable.Refresh();
             }
         }
+
+        #region 練習7
+        /// <summary>
+        /// 球與球間碰撞.
+        /// </summary>
+        /// <param name="b0"></param>
+        /// <param name="b1"></param>
+        private void hit(Ball b0, Ball b1)
+        {
+            // b1 hit b0 速度快的撞慢的
+            if (b0.spd < b1.spd)
+            {   
+                Ball t = b0;     
+                b0 = b1;
+                b1 = t;
+            }
+
+            double dx = b1.x - b0.x;
+            double dy = b1.y - b0.y;
+
+            // 交換球，讓速度快的球成為 b0
+            if (Math.Abs(dx) <= r2 && Math.Abs(dy) <= r2)
+            {
+                // x 坐標間差距 < 球直徑而且y坐標間差距 < 球直徑
+                double ang = Math.Atan2(dy, dx);   // 球b0中心到球b1中心連線方向
+                b1.setAng(ang);                    // 球b1被撞後方向
+                b0.setAng(ang + Math.PI / 2.0);    // 球b0碰撞b1後和b1的夾角 90° 
+
+                double spd_average = (b0.spd + b1.spd) / 2.0;
+                b0.spd = b1.spd = spd_average;     // 碰撞後先大略平均分配兩球的速度
+                                                   // 白球速度 == 紅球速度 == 兩球的速度和除2
+            }
+        }
+        #endregion
 
         #region 練習5
         private void hit_button_Click(object sender, EventArgs e)
