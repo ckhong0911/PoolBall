@@ -38,6 +38,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.vScrollBar2 = new System.Windows.Forms.VScrollBar();
             this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
+            this.chkStop = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // pnlTable
@@ -76,7 +77,7 @@
             // timer1
             // 
             this.timer1.Enabled = true;
-            this.timer1.Interval = 25;
+            this.timer1.Interval = 39;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // btnHit
@@ -120,25 +121,39 @@
             // 
             // vScrollBar2
             // 
-            this.vScrollBar2.LargeChange = 5;
+            this.vScrollBar2.LargeChange = 3;
             this.vScrollBar2.Location = new System.Drawing.Point(956, 115);
-            this.vScrollBar2.Maximum = 50;
+            this.vScrollBar2.Maximum = 30;
             this.vScrollBar2.Minimum = 1;
             this.vScrollBar2.Name = "vScrollBar2";
-            this.vScrollBar2.Size = new System.Drawing.Size(32, 329);
-            this.vScrollBar2.SmallChange = 5;
+            this.vScrollBar2.Size = new System.Drawing.Size(32, 319);
+            this.vScrollBar2.SmallChange = 3;
             this.vScrollBar2.TabIndex = 79;
             this.vScrollBar2.Value = 1;
             // 
             // vScrollBar1
             // 
+            this.vScrollBar1.LargeChange = 12;
             this.vScrollBar1.Location = new System.Drawing.Point(871, 115);
+            this.vScrollBar1.Maximum = 120;
             this.vScrollBar1.Minimum = 1;
             this.vScrollBar1.Name = "vScrollBar1";
-            this.vScrollBar1.Size = new System.Drawing.Size(32, 329);
+            this.vScrollBar1.Size = new System.Drawing.Size(32, 319);
             this.vScrollBar1.SmallChange = 5;
             this.vScrollBar1.TabIndex = 78;
             this.vScrollBar1.Value = 1;
+            // 
+            // chkStop
+            // 
+            this.chkStop.AutoSize = true;
+            this.chkStop.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkStop.Location = new System.Drawing.Point(871, 442);
+            this.chkStop.Name = "chkStop";
+            this.chkStop.Size = new System.Drawing.Size(120, 34);
+            this.chkStop.TabIndex = 82;
+            this.chkStop.Text = "碰撞停止";
+            this.chkStop.UseVisualStyleBackColor = true;
+            this.chkStop.CheckedChanged += new System.EventHandler(this.chkStop_CheckedChanged);
             // 
             // Form2
             // 
@@ -146,6 +161,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 548);
+            this.Controls.Add(this.chkStop);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.vScrollBar2);
@@ -175,5 +191,6 @@
         internal System.Windows.Forms.Label label1;
         private System.Windows.Forms.VScrollBar vScrollBar2;
         private System.Windows.Forms.VScrollBar vScrollBar1;
-    }
+    private System.Windows.Forms.CheckBox chkStop;
+  }
 }

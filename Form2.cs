@@ -11,11 +11,13 @@ namespace prj2
         static int r = 10, r2 = 20;    // 半徑，直徑
         static double fr = 0;          // 摩擦力
         static int width = 0, height = 0;  // 球桌寬, 高
-
-        /// <summary>
-        /// 球類別.
-        /// </summary>
-        class Ball
+        //BufferedGraphicsContext currentContext; 
+        //BufferedGraphics gBuffer;
+    
+    /// <summary>
+    /// 球類別.
+    /// </summary>
+    class Ball
         {
             int id;                        // 球編號
             public double x = 0, y = 0;    // 球心座標
@@ -128,6 +130,10 @@ namespace prj2
             width = pnlTable.Width;
             height = pnlTable.Height;
 
+            //currentContext = BufferedGraphicsManager.Current;
+            //gBuffer = currentContext.Allocate(this.pnlTable.CreateGraphics(), new Rectangle(0, 0, width, height));
+            //g = gBuffer.Graphics;
+
             g = pnlTable.CreateGraphics();     // 繪圖裝置初始化
             // new 每個球，ball 建構者參數見 work_note3 說明
             for (int i = 1; i < 10; i++)
@@ -224,6 +230,13 @@ namespace prj2
             // 交換球，讓速度快的球成為 b0
             if (Math.Abs(dx) <= r2 && Math.Abs(dy) <= r2)
             {
+                //  有打鉤，暫停來拉回看看
+                if (chkStop.Checked)
+                {   
+                    timer1.Stop();
+                    pnlTable.Refresh();  // 顯示球碰撞後重疊的情形
+                }
+
                 // x 坐標間差距 < 球直徑而且y坐標間差距 < 球直徑
                 double ang = Math.Atan2(dy, dx);   // 球b0中心到球b1中心連線方向
                 b1.setAng(ang);                    // 球b1被撞後方向
@@ -261,6 +274,19 @@ namespace prj2
         {
             this.Hide(); 
             Owner.Show();
+        }
+        #endregion
+
+        #region 練習10
+        /// <summary>
+        /// 碰撞停止.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void chkStop_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!chkStop.Checked)
+                timer1.Start();
         }
         #endregion
     }
