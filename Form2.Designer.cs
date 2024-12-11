@@ -39,6 +39,7 @@
             this.vScrollBar2 = new System.Windows.Forms.VScrollBar();
             this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
             this.chkStop = new System.Windows.Forms.CheckBox();
+            this.pullBackButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // pnlTable
@@ -155,12 +156,26 @@
             this.chkStop.UseVisualStyleBackColor = true;
             this.chkStop.CheckedChanged += new System.EventHandler(this.chkStop_CheckedChanged);
             // 
+            // pullBackButton
+            // 
+            this.pullBackButton.BackColor = System.Drawing.SystemColors.Control;
+            this.pullBackButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.pullBackButton.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pullBackButton.Location = new System.Drawing.Point(865, 491);
+            this.pullBackButton.Name = "pullBackButton";
+            this.pullBackButton.Size = new System.Drawing.Size(123, 41);
+            this.pullBackButton.TabIndex = 83;
+            this.pullBackButton.Text = "拉回";
+            this.pullBackButton.UseVisualStyleBackColor = false;
+            this.pullBackButton.Click += new System.EventHandler(this.pullBackButton_Click);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1022, 548);
+            this.Controls.Add(this.pullBackButton);
             this.Controls.Add(this.chkStop);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -192,5 +207,6 @@
         private System.Windows.Forms.VScrollBar vScrollBar2;
         private System.Windows.Forms.VScrollBar vScrollBar1;
     private System.Windows.Forms.CheckBox chkStop;
-  }
+        private System.Windows.Forms.Button pullBackButton;
+    }
 }
